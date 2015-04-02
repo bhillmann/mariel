@@ -3,7 +3,7 @@ import os
 
 class Codeword:
     def __init__(self):
-        self.df = self.read_subjectivity_clues()
+        self.df, self.word_dict = self.read_subjectivity_clues()
 
     @staticmethod
     def read_subjectivity_clues():
@@ -17,10 +17,19 @@ class Codeword:
                 ls[-1] = ls[-1].strip()
                 i = iter(ls)
                 dicts.append(dict(zip(i, i)))
-        return pd.DataFrame(dicts)
+        df = pd.DataFrame(dicts)
+        d = dict(zip(df['word1'], df.index))
+        return df, d
 
-    def add_codeword_tokens(self):
-        print(self.df)
+    def get_codeword_tokens(self, tokens):
+        codeword_tokens = []
+        for token in tokens:
+            if token in self.word_dict:
+                ix = self.word_dict[token]
+                row = self.df.irow(ix)
+                codeword_tokens.append(row['priorpolarity'])
+        return codeword_tokens
 
 if __name__ == '__main__':
     codeword = Codeword()
+    codeword.get_codeword_tokens(["hello", "world", "hate"])
