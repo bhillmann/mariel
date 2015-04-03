@@ -9,6 +9,3 @@ def yield_file_names():
         for line in f:
             yield json.loads(line)
 
-gen = yield_file_names()
-for i in range(20):
-    print(next(gen))
