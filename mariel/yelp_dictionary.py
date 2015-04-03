@@ -5,6 +5,8 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from read_subjectivity_clues import Codeword
 
+codeword = Codeword
+
 def build_dictionary():
     dictionary = corpora.Dictionary(preprocess_line() for line in open('mycorpus.txt'))
     once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
@@ -29,5 +31,5 @@ def tokenize(line):
 def preprocess_line(line):
     line = strip_line(line)
     tokens = tokenize(line)
-    tokens = add_codeword_tokens(line)
+    tokens = tokens + codeword.add_codeword_tokens(line)
     return stem(tokens)
