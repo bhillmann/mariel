@@ -31,6 +31,5 @@ def tokenize(line):
 def preprocess_line(line):
     line = strip_line(line)
     tokens = tokenize(line)
-    codeword.get_codeword_tokens(tokens)
     tokens = tokens + codeword.get_codeword_tokens(tokens)
     return stem(tokens)
