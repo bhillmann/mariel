@@ -7,9 +7,9 @@ from read_subjectivity_clues import Codeword
 
 codeword = Codeword()
 
-def build_dictionary():
-    dictionary = corpora.Dictionary(preprocess_line() for line in open('mycorpus.txt'))
-    once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
+def build_dictionary(iterator):
+    dictionary = corpora.Dictionary(line for line in iterator)
+    once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.items() if docfreq == 1]
     dictionary.filter_tokens(once_ids)
     dictionary.compactify()
     return dictionary

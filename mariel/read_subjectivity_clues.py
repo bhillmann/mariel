@@ -23,11 +23,15 @@ class Codeword:
 
     def get_codeword_tokens(self, tokens):
         codeword_tokens = []
+        codeword_dict = {}
+        codeword_dict['negative'] = 'badword'
+        codeword_dict['positive'] = 'goodword'
         for token in tokens:
             if token in self.word_dict:
                 ix = self.word_dict[token]
-                row = self.df.irow(ix)
-                codeword_tokens.append(row['priorpolarity'])
+                prior = self.df.irow(ix)['priorpolarity']
+                if prior in codeword_dict:
+                    codeword_tokens.append(codeword_dict[prior])
         return codeword_tokens
 
 if __name__ == '__main__':
