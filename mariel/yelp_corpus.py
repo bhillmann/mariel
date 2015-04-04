@@ -1,4 +1,4 @@
-import yelp_dictionary
+import yelp_preprocess
 from gensim import corpora
 from yelp_stream import yield_first
 
@@ -8,7 +8,7 @@ class YelpCorpus:
 
     def __iter__(self):
         for d in yield_first():
-            yield self.d.doc2bow(yelp_dictionary.preprocess_line(d['text']))
+            yield self.d.doc2bow(yelp_preprocess.preprocess_line(d['text']))
 
 if __name__ == '__main__':
     corpus = YelpCorpus()
