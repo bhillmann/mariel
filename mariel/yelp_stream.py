@@ -9,3 +9,12 @@ def yield_file_names():
         for line in f:
             yield json.loads(line)
 
+def yield_first():
+    gen = yield_file_names()
+    for i, d in enumerate(gen):
+        if i < 100000:
+            if i % 1000 == 0:
+                print(i)
+            yield d
+        else:
+            break
