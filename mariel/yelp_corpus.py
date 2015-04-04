@@ -12,5 +12,5 @@ class YelpCorpus:
 
 if __name__ == '__main__':
     corpus = YelpCorpus()
-    path = 'C:/Users/Benjamin/Projects/mariel/mariel/cache/corpus.lda-c'
-    corpora.BleiCorpus.serialize(path, corpus)
+    path = 'C:/Users/Benjamin/Projects/mariel/mariel/cache/corpus.mm'
+    corpora.MmCorpus.serialize(path, corpus)
