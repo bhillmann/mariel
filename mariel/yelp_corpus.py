@@ -1,23 +1,16 @@
+import yelp_dictionary
 from gensim import corpora
-from yelp_stream import yield_file_names
-
-def test_pipeline():
-    gen = yield_file_names()
-    for i, d in enumerate(gen):
-        if i < 100000:
-            if i % 1000 == 0:
-                print(i)
-            yield d
-        else:
-            break
+from yelp_stream import yield_first
 
 class YelpCorpus:
     def __init__(self):
-        self.d = corpora.Dictionary().load_from_text('cache/real.dict')
-        print("hi")
+        self.d = corpora.Dictionary().load('cache/real.dict')
 
     def __iter__(self):
-        for line in open('mycorpus.txt'):
-            yield self.d.doc2bow(line.lower().split())
+        for d in yield_first():
+            yield self.d.doc2bow(yelp_dictionary.preprocess_line(d['text']))
 
-y_c = YelpCorpus()
+if __name__ == '__main__':
+    corpus = YelpCorpus()
+    path = 'C:/Users/Benjamin/Projects/mariel/mariel/cache/corpus.lda-c'
+    corpora.BleiCorpus.serialize(path, corpus)
