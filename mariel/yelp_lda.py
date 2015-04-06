@@ -9,5 +9,6 @@ if __name__ == "__main__":
     corpus = corpora.MmCorpus(corpus_path)
 
     lda = models.LdaModel(corpus, id2word=d, num_topics=20, passes=20)
+    lda.save('C:/Users/Benjamin/Projects/mariel/mariel/cache/yelp.lda')
 
     print(corpus)
