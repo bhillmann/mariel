@@ -67,3 +67,6 @@ target/
 data/
 
 mariel/cache
+*.RData
+R/vis
+*.Rhistory
