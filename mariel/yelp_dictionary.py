@@ -12,7 +12,7 @@ if __name__ == '__main__':
     d_final.filter_tokens(once_ids)
     d_final.compactify()
     path = os.path.join(os.path.dirname(__file__), 'cache')
-    d_final.save(os.path.join(path + 'yelp_blei.dict'))
+    d_final.save(os.path.join(path, 'yelp_blei.dict'))
     with open(os.path.join(path, 'token2id.dat'), 'w') as f:
         for key in d_final.iterkeys():
             f.write(d_final[key] + "\n")
