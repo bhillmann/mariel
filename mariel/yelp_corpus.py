@@ -7,7 +7,7 @@ import os
 class YelpCorpus:
     def __init__(self):
         p = os.path.join(os.path.dirname(__file__), 'cache')
-        self.d = corpora.Dictionary().load(os.path.join(p, 'yelp_blei.lda-c'))
+        self.d = corpora.Dictionary().load(os.path.join(p, 'yelp_blei.dict'))
 
     def __iter__(self):
         for d in yield_midwest_json():
