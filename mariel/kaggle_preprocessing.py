@@ -16,7 +16,6 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from bs4 import BeautifulSoup
 
-
 # Tokenizing (Document to list of sentences. Sentence to list of words.)
 def tokenize(str):
     '''Tokenizes into sentences, then strips punctuation/abbr, converts to lowercase and tokenizes words'''
@@ -64,7 +63,7 @@ def stemming(words_l, type="PorterStemmer", lang="english"):
 
 
 # The preprocess pipeline. Returns as lists of tokens or as string. If stemmer_type = False or not supported then no stemming.
-def preprocess_pipeline(str, lang="english", stemmer_type="PorterStemmer", return_as_str=False,
+def preprocess_pipeline(str, codeword, lang="english", stemmer_type="PorterStemmer", return_as_str=False,
                         do_remove_stopwords=False, do_clean_html=False):
     l = []
     words = []
@@ -74,6 +73,16 @@ def preprocess_pipeline(str, lang="english", stemmer_type="PorterStemmer", retur
         sentences = tokenize(str)
     for sentence in sentences:
         if do_remove_stopwords:
+            # add_words = []
+            # if codeword == 1:
+            #     add_words = ['BADREVIEW', 'BADREVIEW']
+            # elif codeword == 2:
+            #     add_words = ['BADREVIEW']
+            # elif codeword == 4:
+            #     add_words = ['GOODREVIEW']
+            # elif codeword == 5:
+            #     add_words = ['GOODREVIEW', 'GOODREVIEW']
+            # words = remove_stopwords(sentence, lang) + add_words
             words = remove_stopwords(sentence, lang)
         else:
             words = sentence

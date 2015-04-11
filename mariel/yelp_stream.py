@@ -25,7 +25,7 @@ def get_midwest_ids():
     with codecs.open(path, encoding='utf8') as f:
         for line in f:
             json = ujson.loads(line)
-            if json['state'] in midwest and 'Restaurants' in json['categories']:
+            if json['state'] in midwest:
                 ids.add(json['business_id'])
     return ids
 
