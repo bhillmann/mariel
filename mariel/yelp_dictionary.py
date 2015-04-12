@@ -7,7 +7,7 @@ from read_subjectivity_clues import Codeword
 if __name__ == '__main__':
     codeword = Codeword()
     d_final = corpora.Dictionary(
-        preprocess_pipeline(d['text'], codeword, "english", "LancasterStemmer", False, True, True) for d in
+        preprocess_pipeline(d['text'], d['stars'], "english", "LancasterStemmer", False, True, True) for d in
         yield_midwest_json()
     )
     once_ids = [tokenid for tokenid, docfreq in d_final.dfs.items() if docfreq <= 4]

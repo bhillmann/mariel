@@ -12,8 +12,11 @@ class YelpCorpus:
         self.d = corpora.Dictionary().load(os.path.join(p, 'yelp_blei.dict'))
 
     def __iter__(self):
+        # yield self.d.doc2bow(preprocess_pipeline(
+        #     "I enjoy Cafe Mac's zesty burgers but sometimes I distate their unorthodox pizza.",
+        #     self.codeword, "english", "LancasterStemmer", False, True, True))
         for d in yield_midwest_json():
-             yield self.d.doc2bow(preprocess_pipeline(d['text'], self.codeword, "english", "LancasterStemmer", False, True, True))
+             yield self.d.doc2bow(preprocess_pipeline(d['text'], d['stars'], "english", "LancasterStemmer", False, True, True))
 
 if __name__ == '__main__':
     corpus = YelpCorpus()

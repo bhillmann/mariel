@@ -73,17 +73,17 @@ def preprocess_pipeline(str, codeword, lang="english", stemmer_type="PorterStemm
         sentences = tokenize(str)
     for sentence in sentences:
         if do_remove_stopwords:
-            # add_words = []
-            # if codeword == 1:
-            #     add_words = ['BADREVIEW', 'BADREVIEW']
-            # elif codeword == 2:
-            #     add_words = ['BADREVIEW']
-            # elif codeword == 4:
-            #     add_words = ['GOODREVIEW']
-            # elif codeword == 5:
-            #     add_words = ['GOODREVIEW', 'GOODREVIEW']
-            # words = remove_stopwords(sentence, lang) + add_words
-            words = remove_stopwords(sentence, lang)
+            add_words = []
+            if codeword == 1:
+                add_words = ['BADREVIEW', 'BADREVIEW']
+            elif codeword == 2:
+                add_words = ['BADREVIEW']
+            elif codeword == 4:
+                add_words = ['GOODREVIEW']
+            elif codeword == 5:
+                add_words = ['GOODREVIEW', 'GOODREVIEW']
+            words = remove_stopwords(sentence, lang) + add_words
+            # words = remove_stopwords(sentence, lang)
         else:
             words = sentence
         words = stemming(words, stemmer_type)

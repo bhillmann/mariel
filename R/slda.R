@@ -16,7 +16,7 @@ yelp.ratings = as.numeric(yelp.ratings[boolean])
 yelp.ratings = yelp.ratings[boolean]
 yelp.ratings[is.na(yelp.ratings)] = 1
 
-K = 40
+K = 20
 params = seq(-1,1, length.out = K)
 
 token2id = read.table('C:/Users/Benjamin/Projects/mariel/mariel/cache/token2id.dat', header=FALSE)
@@ -29,15 +29,15 @@ doc.length <- sapply(yelp.documents, function(x) sum(x[2, ]))
 N <- sum(doc.length)
 term.frequency <- as.integer(word.counts(yelp.documents, vocab=yelp.vocab))
 
-alpha = 1.2
+alpha = 1.0
 eta = 1/K
 t1 <- Sys.time()
 
 result = slda.em(documents=yelp.documents,
                                      K=K,
                                      vocab=yelp.vocab,
-                                     num.e.iterations=10,
-                                     num.m.iterations=4,
+                                     num.e.iterations=20,
+                                     num.m.iterations=10,
                                      alpha=alpha, eta=eta,
                                      yelp.ratings,
                                      params,
@@ -70,6 +70,7 @@ phi <- t(apply(t(result$topics) + eta, 2, function(x) x/sum(x)))
 # Write theta and phi
 write.csv(file="../mariel/cache/theta.csv", x=theta)
 write.csv(file="../mariel/cache/phi.csv", x=phi)
+write.csv(file="../mariel/cache/coefs.csv", x=coefs)
 
 YelpReviews <- list(phi = phi,
                      theta = theta,
@@ -77,7 +78,10 @@ YelpReviews <- list(phi = phi,
                      vocab = yelp.vocab,
                      term.frequency = term.frequency)
 
+
 # create the JSON object to feed the visualization:
 json <- createJSON(YelpReviews$phi, YelpReviews$theta, YelpReviews$doc.length, YelpReviews$vocab, YelpReviews$term.frequency)
 
 serVis(json, out.dir = 'vis', open.browser = TRUE, as.gist = FALSE)
+
+
