@@ -23,15 +23,15 @@ def make_good_heatmap(D, name):
     # Compute and plot first dendrogram.
     fig = plt.figure()
     # x ywidth height
-    ax1 = fig.add_axes([0.09,0.1,0.2,0.6])
+    ax1 = fig.add_axes([0.09, 0.1, 0.2, 0.6])
     Y = linkage(data_dist, method='complete')
-    Z1 = dendrogram(Y, orientation='right',  color_threshold=.5)
+    Z1 = dendrogram(Y, orientation='right',  color_threshold=.7)
     ax1.set_xticks([])
     ax1.set_yticks([])
 
     # Compute and plot second dendrogram.
     ax2 = fig.add_axes([0.3,0.71,0.6,0.2])
-    Z2 = dendrogram(Y, color_threshold=.5)
+    Z2 = dendrogram(Y, color_threshold=.7)
     ax2.set_xticks([])
     ax2.set_yticks([])
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     nx.write_gexf(G, 'practice.gexf')
 
 
-    # make_good_heatmap(pd_phi, '')
+    make_good_heatmap(df_phi.values, '')
     # make_heatmap(pd_phi, '')
     # make_histogram([item for sublist in pd_phi for item in sublist])
     # pd_phi_mask = correlation_adjacency_matrix(pd_phi)

@@ -9,13 +9,17 @@ def yield_midwest_json():
                         '../data/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json')
     s = 0
     with codecs.open(path, encoding='utf8') as f:
-        for line in f:
-            json = ujson.loads(line)
-            if json['business_id'] in ids:
-                s += 1
-                if s % 1000 == 0:
-                    print(s)
-                yield json
+        for i, line in enumerate(f):
+            if i == 0:
+                d = {'text': "I enjoy Cafe Mac's zesty burgers but sometimes I distate their unorthodox pizza.", 'stars': 3}
+                yield d
+            else:
+                json = ujson.loads(line)
+                if json['business_id'] in ids:
+                    s += 1
+                    if s % 1000 == 0:
+                        print(s)
+                    yield json
 
 def get_midwest_ids():
     midwest = ['MN', 'IL', 'IN', 'WI', 'IA', 'KS', 'MI', 'MO', 'NE', 'ND', 'OH', 'SD']
