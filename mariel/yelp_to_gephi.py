@@ -8,10 +8,12 @@ from sklearn.metrics.pairwise import pairwise_distances
 import os
 import pandas as pd
 
+
 def make_heatmap(data):
     pcolor(data)
     colorbar()
     show()
+
 
 def make_good_heatmap(D):
     data_dist = 1. - D
@@ -48,6 +50,7 @@ def make_good_heatmap(D):
     plt.colorbar(im, cax=axcolor)
     show()
 
+
 def make_histogram(x):
     # the histogram of the data
     plt.hist(x, 50, normed=1, facecolor='green', alpha=0.75)
@@ -57,15 +60,18 @@ def make_histogram(x):
     grid(True)
     show()
 
+
 def mask_correlation(i):
     if i <= .7 and i > 0:
         return 1.
     else:
         return 0.
 
+
 def correlation_adjacency_matrix(correlation_matrix):
     f = np.vectorize(mask_correlation)
     return f(correlation_matrix)
+
 
 def cross_correlation_graph(m_phi, coefs):
     G = nx.Graph(m_phi)
@@ -74,9 +80,9 @@ def cross_correlation_graph(m_phi, coefs):
         G.node[node]['coeff'] = float(coefs.loc[node+1]['Estimate'])
     return G
 
+
 def get_top_docs(ind, mat):
     return pd.Series([kullback_leibler(row, mat[ind]) for row in mat])
-
 
 if __name__ == "__main__":
     path = os.path.join(os.path.dirname(__file__), 'cache')
