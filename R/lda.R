@@ -6,7 +6,7 @@ library("servr")
 
 yelp.documents = read.documents("../mariel/cache/yelp_blei.lda-c")
 yelp.documents = filter.words(yelp.documents,
-                        as.numeric(names(term.frequency)[term.frequency <= 4]))
+                              as.numeric(names(term.frequency)[term.frequency <= 4]))
 boolean = sapply(yelp.documents, function(x) {sum(x) > 0})
 yelp.documents = yelp.documents[boolean]
 term.frequency = word.counts(yelp.documents)
@@ -33,24 +33,17 @@ alpha = 1.0
 eta = 1/K
 t1 <- Sys.time()
 
-result = slda.em(documents=yelp.documents,
+result = lda.collapsed.gibbs.sampler(documents=yelp.documents,
                                      K=K,
                                      vocab=yelp.vocab,
-                                     num.e.iterations=20,
-                                     num.m.iterations=10,
-                                     alpha=alpha, eta=eta,
-                                     yelp.ratings,
-                                     params,
-                                     variance=1,
-                                     lambda=1.0,
-                                     logistic=FALSE,
-                                     method="sLDA")
+                                     20,
+                                     alpha=alpha, eta=eta)
 
 t2 <- Sys.time()
 t2 - t1  # about 24 minutes on laptop
 
 Topics <- apply(top.topic.words(result$topics, 5, by.score=TRUE),
-                                 2, paste, collapse=" ")
+                2, paste, collapse=" ")
 
 coefs <- data.frame(coef(summary(result$model)))
 
@@ -61,8 +54,8 @@ coefs <- cbind(coefs, Topics=factor(Topics, Topics[order(coefs$Estimate)]))
 coefs <- coefs[order(coefs$Estimate),]
 
 qplot(Topics, Estimate, colour=Estimate, size=abs(t.value), data=coefs) +
-     geom_errorbar(width=0.5, aes(ymin=Estimate-Std..Error,
-                                                      ymax=Estimate+Std..Error)) + coord_flip()
+  geom_errorbar(width=0.5, aes(ymin=Estimate-Std..Error,
+                               ymax=Estimate+Std..Error)) + coord_flip()
 
 theta <- t(apply(result$document_sums + alpha, 2, function(x) x/sum(x)))
 phi <- t(apply(t(result$topics) + eta, 2, function(x) x/sum(x)))
@@ -75,15 +68,14 @@ write.csv(file="../mariel/cache/stars.csv", x=yelp.ratings)
 
 
 YelpReviews <- list(phi = phi,
-                     theta = theta,
-                     doc.length = doc.length,
-                     vocab = yelp.vocab,
-                     term.frequency = term.frequency)
+                    theta = theta,
+                    doc.length = doc.length,
+                    vocab = yelp.vocab,
+                    term.frequency = term.frequency)
 
 
 # create the JSON object to feed the visualization:
 json <- createJSON(YelpReviews$phi, YelpReviews$theta, YelpReviews$doc.length, YelpReviews$vocab, YelpReviews$term.frequency)
 
 serVis(json, out.dir = 'vis', open.browser = TRUE, as.gist = FALSE)
-
 

@@ -49,3 +49,9 @@ def yield_first():
             yield d
         else:
             break
+
+if __name__ == "__main__":
+    path = os.path.join(os.path.dirname(__file__), 'cache')
+    with open(os.path.join(path, 'docs.txt'), 'w') as f:
+        for json in yield_midwest_json():
+            f.write(ujson.dumps(json)+'/n')
