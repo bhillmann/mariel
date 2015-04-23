@@ -1,12 +1,12 @@
 import pandas as pd
-import os
 import networkx as nx
 from scipy.spatial.distance import squareform
-from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from scipy.cluster.hierarchy import linkage, dendrogram
 from pylab import *
 from similarity_metrics import kullback_leibler
 from scipy.spatial.distance import cosine
 from sklearn.metrics.pairwise import pairwise_distances
+import pandas as pd
 
 def make_heatmap(data, name):
     pcolor(data)
@@ -71,36 +71,39 @@ def correlation_adjacency_matrix(correlation_matrix):
     return f(correlation_matrix)
 
 def cross_correlation_graph(phi, m_phi, coefs):
-    # top_words = phi.idxmax(axis=1)
-    # labels = dict(zip(top_words.index, top_words.values))
     G = nx.Graph(m_phi)
     for node in G.nodes_iter():
         G.node[node]['label'] = str(coefs.loc[node+1]['Topics'])
         G.node[node]['coeff'] = float(coefs.loc[node+1]['Estimate'])
     return G
 
+def get_top_docs(ind, arr):
+    return pd.Series([kullback_leibler(datum, arr(ind)) for datum in arr])
+
 
 if __name__ == "__main__":
     path = os.path.join(os.path.dirname(__file__), 'cache')
-    phi = pd.DataFrame.from_csv(os.path.join(path, 'phi.csv'))
+    # phi = pd.DataFrame.from_csv(os.path.join(path, 'phi.csv'))
     theta = pd.DataFrame.from_csv(os.path.join(path, 'theta.csv'))
-    coefs = pd.DataFrame.from_csv(os.path.join(path, 'coefs.csv'))
-    coefs.index = [int(i.split('.')[2]) for i in coefs.index]
-    df_phi = pd.DataFrame(pairwise_distances(phi.values, metric=cosine))
-    df_phi.to_csv("practice.csv")
-    G = cross_correlation_graph(phi, df_phi.values, coefs)
-    nx.write_gexf(G, 'practice.gexf')
-
-
-    make_good_heatmap(df_phi.values, '')
-    # make_heatmap(pd_phi, '')
+    # coefs = pd.DataFrame.from_csv(os.path.join(path, 'coefs.csv'))
+    # coefs.index = [int(i.split('.')[2]) for i in coefs.index]
+    # df_phi = pd.DataFrame(pairwise_distances(phi.values, metric=cosine))
+    # df_phi.to_csv("practice.csv")
+    # G = cross_correlation_graph(phi, df_phi.values, coefs)
+    # nx.write_gexf(G, 'practice.gexf')
+    #
+    #
+    # make_good_heatmap(df_phi.values, '')
+    # # make_heatmap(pd_phi, '')
     # make_histogram([item for sublist in pd_phi for item in sublist])
     # pd_phi_mask = correlation_adjacency_matrix(pd_phi)
     # make_heatmap(pd_phi_mask, '')
     #
-    # pd_theta = pairwise_distances(theta.values, metric=cosine)
-    # make_good_heatmap(pd_theta, '')
-    # make_histogram([item for sublist in pd_theta for item in sublist])
-    # pd_theta_mask = correlation_adjacency_matrix(pd_theta)
-    # make_heatmap(pd_theta_mask, '')
+    pd_theta = pairwise_distances(theta.values, metric=cosine)
+    make_good_heatmap(pd_theta, '')
+    make_histogram([item for sublist in pd_theta for item in sublist])
+    pd_theta_mask = correlation_adjacency_matrix(pd_theta)
+    make_heatmap(pd_theta_mask, '')
+    G = nx.Graph(pd_theta.values)
+    nx.write_gexf(G, 'theta.gexf')
 
