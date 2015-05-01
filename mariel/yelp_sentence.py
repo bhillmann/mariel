@@ -9,4 +9,3 @@ if __name__ == "__main__":
                 "I enjoy Cafe Mac's zesty burgers but sometimes I distate their unorthodox pizza.",
                 3, "english", "LancasterStemmer", False, True, True)))
     corpus = corpora.BleiCorpus(os.path.join(p, 'yelp_blei.lda-c'))
-    corpus.

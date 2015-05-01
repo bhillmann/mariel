@@ -9,9 +9,9 @@ def yield_midwest_json():
         for line in open(os.path.join(path, 'docs.txt')):
             yield ujson.loads(line)
     except:
-        yieldsss()
+        yield_from_source()
     
-def yieldsss():
+def yield_from_source():
     ids = get_midwest_ids()
     path = os.path.join(os.path.dirname(__file__),
                         '../data/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json')
@@ -19,7 +19,7 @@ def yieldsss():
     with codecs.open(path, encoding='utf8') as f:
         for i, line in enumerate(f):
             if i == 0:
-                d = {'text': "I enjoy Cafe Mac's zesty burgers but sometimes I distate their unorthodox pizza. Their food is generally good but they have really bad beer.", 'stars': 3}
+                d = {'text': "I enjoy Cafe Mac's zesty burgers but sometimes I distate their unorthodox pizza.", 'stars': 3}
                 yield d
             else:
                 json = ujson.loads(line)
@@ -61,5 +61,5 @@ def yield_first():
 if __name__ == "__main__":
     path = os.path.join(os.path.dirname(__file__), 'cache')
     with open(os.path.join(path, 'docs.txt'), 'w') as f:
-        for json in yieldsss():
+        for json in yield_from_source():
             f.write(ujson.dumps(json)+'\n')
